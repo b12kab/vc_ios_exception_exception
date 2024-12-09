@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0-ios</TargetFramework>
+        <OutputType>Library</OutputType>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>
+        <Configurations>Release;Debug</Configurations>
+        <IsAppExtension>True</IsAppExtension>
+        <IsWatchExtension>False</IsWatchExtension>
+        <!--Only one entitlement for this project-->
+        <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    </PropertyGroup>
+    <Target Name="PrintInfo" BeforeTargets="BeforeBuild">
+        <!-- Use $(Property Name) to reference a property -->
+        <!-- Use @(Item Name) to output a semi-colon separated list of items on one line -->
+        <!-- Use %(Item Name.Metadata Property Name) to call the Message task once for each item on a separate line.&nbsp; -->
+        <Message Text="Variable dump --&gt; TargetFramework: $(TargetFramework); Configuration: $(Configuration); Platform: $(Platform) " Importance="high" />
+    </Target>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|net8.0-ios'">
+        <ApplicationId>com.exampleapz.app.notificationcontent</ApplicationId>
+        <CodesignKey>iPhone Distribution</CodesignKey>
+        <CodesignProvision>Automatic</CodesignProvision>
+        <!--configuration options-->
+        <DebugType>portable</DebugType>
+        <Optimize>true</Optimize>
+        <WarningLevel>4</WarningLevel>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <CreatePackage>false</CreatePackage>
+        <MtouchUseLlvm>true</MtouchUseLlvm>
+        <MtouchFloat32>true</MtouchFloat32>
+        <MtouchLink>SdkOnly</MtouchLink>
+        <NoWarn>1701;1702</NoWarn>
+        <NoStdLib>false</NoStdLib>
+        <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+        <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net8.0-ios'">
+        <ApplicationId>com.exampleapz.debug.notificationcontent</ApplicationId>
+<!--        <CodesignKey>iPhone Developer</CodesignKey>-->
+        <CodesignProvision>Automatic</CodesignProvision>
+        <!--configuration options-->
+        <MtouchDebug>true</MtouchDebug>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <CreatePackage>false</CreatePackage>
+        <WarningLevel>4</WarningLevel>
+        <MtouchUseLlvm>true</MtouchUseLlvm>
+        <MtouchFloat32>true</MtouchFloat32>
+        <MtouchLink>SdkOnly</MtouchLink>
+        <!--<RuntimeIdentifier Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' != 'arm64'">iossimulator-x64</RuntimeIdentifier>-->
+        <!--<RuntimeIdentifier Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'arm64'">iossimulator-arm64</RuntimeIdentifier>-->
+        <RuntimeIdentifier>iossimulator-x64</RuntimeIdentifier> 
+    </PropertyGroup>
+
+  <!--set info.plist for configuration type-->
+  <Choose>
+    <When Condition="$(Configuration) == 'Release'">
+      <ItemGroup>
+        <None Include="Info.Release.plist">
+          <LogicalName>Info.plist</LogicalName>
+          <SubType>Designer</SubType>
+        </None>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <None Include="Info.Debug.plist">
+          <LogicalName>Info.plist</LogicalName>
+          <SubType>Designer</SubType>
+        </None>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+
+</Project>
